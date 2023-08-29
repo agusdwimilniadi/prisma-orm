@@ -1,0 +1,17 @@
+- Penjelasan One to one, one to many, many to many
+        one to one : 1 customer 1 wallet
+        one to many : 1 customer many comments
+        many to many:
+        - satu produk bisa di like banyak customer
+        - satu customer bisa like banyak produk
+
+- BUAT MIGRATION
+npx prisma migrate dev --create-only --name create_all_model
+
+- Migrate
+npx prisma migrate dev
+
+
+- Tambah kolom
+npx prisma migrate dev --create-only --name NAMA_MIGRATION
+    - setelah itu jangan dihapus migration lama

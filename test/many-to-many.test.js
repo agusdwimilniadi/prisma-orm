@@ -29,4 +29,69 @@ describe('Prisma Client', () => {
     });
     console.info(JSON.stringify(customer));
   });
+  it('should be able to find with inclue and filter', async () => {
+    const customer = await prismaClient.customer.findMany({
+      where: {
+        likes: {
+          some: {
+            product: {
+              name: {
+                contains: 'A',
+              },
+            },
+          },
+        },
+      },
+      include: {
+        likes: {
+          include: {
+            product: true,
+          },
+        },
+      },
+    });
+    console.info(JSON.stringify(customer));
+  });
+
+  it('should can update implicit relation', async () => {
+    const customer = await prismaClient.customer.update({
+      where: {
+        id: '10',
+      },
+      data: {
+        loves: {
+          connect: [
+            {
+              id: 'P0002',
+            },
+            {
+              id: 'P0003',
+            },
+          ],
+        },
+      },
+      include: {
+        loves: true,
+      },
+    });
+    console.info(customer);
+  });
+
+  it('should can find many implicit relation', async () => {
+    const customer = await prismaClient.customer.findMany({
+      where: {
+        loves: {
+          some: {
+            name: {
+              contains: 'U',
+            },
+          },
+        },
+      },
+      include: {
+        loves: true,
+      },
+    });
+    console.info(customer);
+  });
 });

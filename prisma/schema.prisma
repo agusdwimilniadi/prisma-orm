@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model sample {
+  id String @id
+  name String
+}
+
+model Customer {
+  id String @id @db.VarChar(100)
+  name String
+  email String @unique
+  phone String @unique
+  wallet Wallet? // bisa aja customer nya gapunya wallet
+  comments Comment[] // one to many, bisa banyak comments
+  likes Like[]
+
+  @@map("customers") // nama tabel nya
+}
+
+model Wallet {
+  id String @id @db.VarChar(100)
+  ballance Int @db.Int
+  customer_id String @unique @db.VarChar(100)
+  Customer Customer @relation(fields: [customer_id], references: [id])
+
+  @@map("wallet")
+
+}
+
+model Product {
+  id String @id
+  name String
+  price Int
+  stock Int
+  category String
+  likedBy Like[]
+
+  @@map("products")
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(100)
+
+
+  @@map("categories")
+}
+model Comment {
+  id Int @id @default(autoincrement())
+  title String @db.VarChar(200)
+  description String? @db.Text
+  customer_id String @db.VarChar(100)
+  customer Customer @relation(fields: [customer_id], references: [id])
+
+
+  @@map("comments")
+}
+model Like {
+  customer_id String @db.VarChar(100)
+  product_id String @db.VarChar(100)
+  customer Customer @relation(fields: [customer_id],references: [id])
+  product Product @relation(fields: [product_id],references: [id])
+
+
+  @@id([customer_id, product_id])
+
+  @@map("likes")
+
+}

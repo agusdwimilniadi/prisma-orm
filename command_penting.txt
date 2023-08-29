@@ -19,3 +19,6 @@ npx prisma migrate dev --create-only --name NAMA_MIGRATION
 
 - Database sudah ada, lalu pengen dibuat migration nya
 npx prisma db pull
+
+- Buka prisma studio (Kayak UI)
+npx prisma studio
